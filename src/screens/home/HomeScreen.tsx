@@ -34,7 +34,7 @@ const HomeScreen = (props: NativeStackScreenProps<RootParams, 'Home'>) => {
   }
 
   const onPress = (item: Country) => {
-    navigation.navigate('Country', {country: item});
+    navigation.navigate('Country', {countryCode: item.code});
   };
 
   return (

@@ -1,9 +1,14 @@
-import {LinkingOptions} from "@react-navigation/native";
-import {RootParams} from "navigation/types";
+import {LinkingOptions} from '@react-navigation/native';
+import {RootParams} from 'navigation/types';
 
 const linkingOptions: LinkingOptions<RootParams> = {
-  prefixes: ['rnhw'],
-  
-}
+  prefixes: ['rnhw://'],
+  config: {
+    screens: {
+      Country: 'country/:countryCode',
+      Continent: 'continent/:continentCode',
+    },
+  },
+};
 
-export default linkingOptions
+export default linkingOptions;

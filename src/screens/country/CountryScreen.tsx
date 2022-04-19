@@ -1,22 +1,54 @@
 import React, {useLayoutEffect} from 'react';
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import {RootParams} from 'navigation/types';
-import {ScrollView, StyleSheet, Text, View} from 'react-native';
-import DeeplinkText from "components/DeeplinkText";
+import {
+  ActivityIndicator,
+  ScrollView,
+  StyleSheet,
+  Text,
+  View,
+} from 'react-native';
+import DeeplinkText from 'components/DeeplinkText';
+import {useQuery} from '@apollo/client';
+import {GET_COUNTRY_QUERY} from 'api/countries';
 
 function CountryScreen(props: NativeStackScreenProps<RootParams, 'Country'>) {
   const {
     navigation,
     route: {
-      params: {country},
+      params: {countryCode},
     },
   } = props;
+  const {data, loading, error} = useQuery(GET_COUNTRY_QUERY, {
+    variables: {
+      code: countryCode,
+    },
+  });
+  const country = data ? data.country : null;
 
   useLayoutEffect(() => {
-    navigation.setOptions({
-      title: country.name,
-    });
+    if (country) {
+      navigation.setOptions({
+        title: country.name,
+      });
+    }
   }, [navigation, country]);
+
+  if (loading) {
+    return (
+      <View style={styles.placeholderContainer}>
+        <ActivityIndicator size={'large'} />
+      </View>
+    );
+  }
+
+  if (error) {
+    return (
+      <View style={styles.placeholderContainer}>
+        <Text style={styles.errorText}>Cannot get country details</Text>
+      </View>
+    );
+  }
 
   return (
     <ScrollView style={styles.scrollView}>
@@ -35,7 +67,9 @@ function CountryScreen(props: NativeStackScreenProps<RootParams, 'Country'>) {
 
         <View style={styles.row}>
           <Text>Continent</Text>
-          <DeeplinkText link={''}>{country.continent.name}</DeeplinkText>
+          <DeeplinkText link={`/continent/${country.continent.code}`}>
+            {country.continent.name}
+          </DeeplinkText>
         </View>
       </View>
     </ScrollView>
@@ -63,6 +97,15 @@ const styles = StyleSheet.create({
   flag: {
     fontSize: 60,
     alignSelf: 'center',
+  },
+  placeholderContainer: {
+    flex: 1,
+    backgroundColor: 'white',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  errorText: {
+    fontSize: 16,
   },
 });
 

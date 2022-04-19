@@ -1,7 +1,5 @@
-import {Continent, Country} from 'api/types';
-
 export type RootParams = {
   Home: undefined;
-  Country: {country: Country};
-  Continent: {continent: Continent};
+  Country: {countryCode: string};
+  Continent: {continentCode: string};
 };

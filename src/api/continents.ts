@@ -1,14 +1,22 @@
 import {gql} from '@apollo/client';
+import {COUNTRY_DISPLAY_FIELDS_FRAGMENT} from 'api/countries';
 
-export const GET_CONTINENTS_QUERY = gql`
-  query GetContinents {
-    continents {
-      code
-      name
+export const CONTINENT_DISPLAY_FIELDS_FRAGMENT = gql`
+  fragment ContinentDisplayFields on Continent {
+    code
+    name
+  }
+`;
+
+export const GET_CONTINENT_QUERY = gql`
+  query GetContinent($code: ID!) {
+    continent(code: $code) {
+      ...ContinentDisplayFields
       countries {
-        code
-        name
+        ...CountryDisplayFields
       }
     }
   }
+  ${CONTINENT_DISPLAY_FIELDS_FRAGMENT}
+  ${COUNTRY_DISPLAY_FIELDS_FRAGMENT}
 `;

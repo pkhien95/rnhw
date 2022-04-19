@@ -3,6 +3,7 @@ import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import HomeScreen from 'screens/home/HomeScreen';
 import {RootParams} from 'navigation/types';
 import CountryScreen from 'screens/country/CountryScreen';
+import ContinentScreen from 'screens/continent/ContinentScreen';
 
 const Stack = createNativeStackNavigator<RootParams>();
 
@@ -14,9 +15,20 @@ const RootNavigator = () => {
         component={HomeScreen}
         options={{title: 'Countries'}}
       />
-      <Stack.Screen name="Country" component={CountryScreen} options={{
-        headerBackTitleVisible: false
-      }}/>
+      <Stack.Screen
+        name="Country"
+        component={CountryScreen}
+        options={{
+          headerBackTitleVisible: false,
+        }}
+      />
+      <Stack.Screen
+        name="Continent"
+        component={ContinentScreen}
+        options={{
+          headerBackTitleVisible: false,
+        }}
+      />
     </Stack.Navigator>
   );
 };
